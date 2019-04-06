@@ -3,7 +3,13 @@ const ___ = Symbol("rest parameters");
 
 const reduce = function() {};
 
-const map = function() {};
+const map = function(f, iter) {
+  const mappedArray = [];
+  for (const val of iter) {
+    mappedArray.push(f(val));
+  }
+  return mappedArray;
+};
 
 const filter = function() {};
 
@@ -21,17 +27,4 @@ const curry = function() {};
 
 const partial = function() {};
 
-export {
-  reduce,
-  map,
-  filter,
-  groupBy,
-  countBy,
-  indexBy,
-  pipe,
-  go,
-  curry,
-  partial,
-  _,
-  ___,
-}
+export { reduce, map, filter, groupBy, countBy, indexBy, pipe, go, curry, partial, _, ___ };
