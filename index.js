@@ -1,7 +1,16 @@
 const _ = Symbol("parameter");
 const ___ = Symbol("rest parameters");
 
-const reduce = function() {};
+const reduce = (f, acc, iter) => {
+  if (!iter) {
+    iter = acc[Symbol.iterator]();
+    acc = iter.next().value;
+  }
+  for (const val of iter) {
+    acc = f(acc, val);
+  }
+  return acc;
+};
 
 const map = function(f, iter) {
   const mappedArray = [];
@@ -11,7 +20,13 @@ const map = function(f, iter) {
   return mappedArray;
 };
 
-const filter = function() {};
+const filter = function(f, iter) {
+  const filteredArray = [];
+  for (const val of iter) {
+    if (f(val)) filteredArray.push(val);
+  }
+  return filteredArray;
+};
 
 const groupBy = function() {};
 
