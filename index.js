@@ -1,12 +1,7 @@
 const _ = Symbol("parameter");
 const ___ = Symbol("rest parameters");
 
-<<<<<<< HEAD
-const reduce = function() {};
-
-const map = function() {};
-=======
-const reduce = curry(function (f, acc, iter) {
+const reduce = curry(function(f, acc, iter) {
   if (!iter) {
     iter = acc[Symbol.iterator]();
     acc = iter.next().value;
@@ -16,35 +11,32 @@ const reduce = curry(function (f, acc, iter) {
   }
   return acc;
 }, 1);
->>>>>>> 9fdc3e7eaace14f65c1c6545463b549065e4557b
 
-const map = curry((f, iter) =>
-  reduce((acc, item) => (acc.push(f(item)), acc), [], iter));
+const map = curry((f, iter) => reduce((acc, item) => (acc.push(f(item)), acc), [], iter));
 
-<<<<<<< HEAD
-const groupBy = function() {};
-=======
-const filter = curry((f, iter) =>
-  reduce((acc, item) => (f(item) && acc.push(item), acc), [], iter));
+const filter = curry((f, iter) => reduce((acc, item) => (f(item) && acc.push(item), acc), [], iter));
 
-const _baseBy = f => curry((keyF, iter) =>
-  reduce((acc, item) => f(acc, item, keyF(item)), {}, iter));
->>>>>>> 9fdc3e7eaace14f65c1c6545463b549065e4557b
+const _baseBy = f => curry((keyF, iter) => reduce((acc, item) => f(acc, item, keyF(item)), {}, iter));
 
-const groupBy = _baseBy((acc, item, key) => Object.assign(acc, {
-  [key]: (acc[key] || []).concat(item)
-}));
+const groupBy = _baseBy((acc, item, key) =>
+  Object.assign(acc, {
+    [key]: (acc[key] || []).concat(item)
+  })
+);
 
-const countBy = _baseBy((acc, item, key) => Object.assign(acc, {
-  [key]: (acc[key] || 0) + 1
-}));
+const countBy = _baseBy((acc, item, key) =>
+  Object.assign(acc, {
+    [key]: (acc[key] || 0) + 1
+  })
+);
 
-const indexBy = _baseBy((acc, item, key) => Object.assign(acc, {
-  [key]: item
-}));
+const indexBy = _baseBy((acc, item, key) =>
+  Object.assign(acc, {
+    [key]: item
+  })
+);
 
-const pipe = (f1, ...fns) =>
-  (...args) => reduce((acc, f) => f(acc), f1(...args), fns);
+const pipe = (f1, ...fns) => (...args) => reduce((acc, f) => f(acc), f1(...args), fns);
 
 const go = (a, ...fns) => pipe(...fns)(a);
 // const go = (...args) => reduce((acc, f) => f(acc), args);
@@ -54,16 +46,18 @@ function curry(f, len = f.length - 1) {
     if (args1.length > len) return f(...args1);
     return (...args2) => _recur(...args1, ...args2);
   };
-};
+}
 
-const reverseIter = function* (iter) {
+const reverseIter = function*(iter) {
   const arr = [...iter];
   for (let i = arr.length - 1; i >= 0; i--) yield arr[i];
 };
 
+// 인자 갯수가 명확하지 않고 중간에 비어 있는 경우? 지연 평가
 const partial = function(f, ...args1) {
-  const left = [], right = [];
-  return function (...args2) {
+  const left = [],
+    right = [];
+  return function(...args2) {
     const args1Iter = args1[Symbol.iterator]();
     const args2Iter = args2[Symbol.iterator]();
     for (const arg of args1Iter) {
@@ -75,36 +69,73 @@ const partial = function(f, ...args1) {
       right.unshift(arg === _ ? args2RverseIter.next().value : arg);
     }
     return f(...left, ...reverseIter(args2RverseIter), ...right);
+  };
+};
+
+const take = (l, iter) => {
+  let res = [];
+  for (const val of iter) {
+    res.push(val);
+    if (res.length === l) return res;
+  }
+  return res;
+};
+
+const takeAll = () => {};
+
+const takeWhile = (f, iter) => {
+  const res = [];
+  for (const val of iter) {
+    if (f(val)) res.push(val);
+    else return res;
   }
 };
 
-const takeWhile = function () {};
-
-const take = function() {};
-
-const takeAll = function() {};
-
 const L = {};
 
-L.map = function *() {};
+L.map = function*(f, iter) {
+  for (const val of iter) {
+    yield f(val);
+  }
+};
 
-L.filter = function *() {};
+L.filter = function*(f, iter) {
+  for (const val of iter) {
+    if (f(val)) yield val;
+  }
+};
 
-L.range = function *() {};
+L.range = function*(l) {
+  let i = -1;
+  while (i++ < l) {
+    yield i;
+  }
+};
 
-const range = function() {};
+const range = function(l) {
+  let i = -1;
+  const res = [];
+  while (i++ < l) {
+    res.push(i);
+  }
+  return res;
+};
 
-const find = function() {};
+const find = function(v, iter) {
+  for (const val of iter) {
+    if (val === v) return val;
+  }
+};
 
-L.flat = function *() {};
+L.flat = function*() {};
 
 const flat = function() {};
 
-L.deepFlat = function *() {};
+L.deepFlat = function*() {};
 
 const deepFlat = function() {};
 
-L.flatMap = function *() {};
+L.flatMap = function*() {};
 
 const flatMap = function() {};
 
@@ -130,4 +161,4 @@ export {
   flat,
   deepFlat,
   flatMap
-}
+};
