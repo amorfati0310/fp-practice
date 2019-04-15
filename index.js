@@ -20,9 +20,8 @@ const reduce = (f, acc, iter) => {
 //   return mappedArray;
 // };
 
-// reduce로 map 구현 해보기 
-const map = 
-
+// reduce로 map 구현 해보기
+const map = reduce(f, iter);
 
 const filter = function(f, iter) {
   const filteredArray = [];
