@@ -12,13 +12,17 @@ const reduce = (f, acc, iter) => {
   return acc;
 };
 
-const map = function(f, iter) {
-  const mappedArray = [];
-  for (const val of iter) {
-    mappedArray.push(f(val));
-  }
-  return mappedArray;
-};
+// const map = function(f, iter) {
+//   const mappedArray = [];
+//   for (const val of iter) {
+//     mappedArray.push(f(val));
+//   }
+//   return mappedArray;
+// };
+
+// reduce로 map 구현 해보기 
+const map = 
+
 
 const filter = function(f, iter) {
   const filteredArray = [];
